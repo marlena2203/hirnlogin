@@ -38,8 +38,8 @@ _PASS='' # Password / Passwort
 # Nach dieser Zeile nichts mehr ändern!                               #
 #######################################################################
 _USERAGENT='HIRN Login Script v0.6'
-_STARTURL='https://login.rz.ruhr-uni-bochum.de/cgi-bin/start'
-_POSTURL='https://login.rz.ruhr-uni-bochum.de/cgi-bin/laklogin'
+_STARTURL='https://login.ruhr-uni-bochum.de/cgi-bin/start'
+_POSTURL='https://login.ruhr-uni-bochum.de/cgi-bin/laklogin'
 _CACERT='/etc/ssl/certs/T-TeleSec_GlobalRoot_Class_2.pem'
 _CACERTURL='https://www.pki.dfn.de/fileadmin/PKI/zertifikate/deutsche-telekom-root-ca-2.pem'
 _ISINTERNETUP='google.com'
