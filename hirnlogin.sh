@@ -3,6 +3,7 @@
 # All rights reserved.
 #
 # Modifications: (c) 2014, Jan Holthuis <jan.holthuis@rub.de>
+# Modifications: (c) 2026, Marlena Müller <marlena.mueller@rub.de>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -33,11 +34,16 @@
 _USER='' # Username (Login-ID) / Benutzer (Login-ID)
 _PASS='' # Password / Passwort
 
+# Alternative use Network Access Token generated from https://portal.noc.rub.de
+# If _NAT is not empty, username and password get ignored
+
+_NAT='' # Network Access Token
+
 #######################################################################
 # Don't change anything past this line!                               #
 # Nach dieser Zeile nichts mehr ändern!                               #
 #######################################################################
-_USERAGENT='HIRN Login Script v0.6'
+_USERAGENT='HIRN Login Script v0.7'
 _STARTURL='https://login.ruhr-uni-bochum.de/cgi-bin/start'
 _POSTURL='https://login.ruhr-uni-bochum.de/cgi-bin/laklogin'
 _CACERT='/etc/ssl/certs/T-TeleSec_GlobalRoot_Class_2.pem'
@@ -99,15 +105,15 @@ if [ $_EXIT -ne 0 ]; then
     exit 2
 fi
 
-# Check if user entered login credentials (i.e. check if $_USER and $_PAth are zero-length strings)
-if [ -z $_USER ] || [ -z $_PASS ]; then
-    echo "Login credentials not set. Please edit this file and fill in values for \$_USER and \$_PASS."
+# Check if user entered login credentials (i.e. check if $_USER and $_PASS or $_NAT are zero-length strings)
+if ( [ -z $_USER ] || [ -z $_PASS ] ) && [ -z $_NAT ]; then
+    echo "Login credentials not set. Please edit this file and fill in values for \$_USER and \$_PASS or \$_NAT."
     exit 3
 fi
 
 # Get the IP address and complete the POST data
 _IPADDR=`curl -s -1 -4 -A "$_USERAGENT" --cacert "$_CACERT" "$_STARTURL" | grep ipaddr| cut -d '"' -f 8`
-_POST="code=1&loginid=$_USER&password=$_PASS&ipaddr=$_IPADDR&action=$_ACTION"
+_POST="code=1&loginid=$_USER&password=$_PASS&networkaccesstoken=$_NAT&ipaddr=$_IPADDR&action=$_ACTION"
 
 # Do the Login
 curl -s -1 -4 -A "$_USERAGENT" -d "$_POST" -e "$_STARTURL" --cacert "$_CACERT" "$_POSTURL" | grep -q "$_SUCCESSSTRING"
